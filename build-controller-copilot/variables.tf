@@ -49,3 +49,15 @@ variable "create_alb" {
 variable "certificate_arn" {
   type = string
 }
+
+variable "sfaccess_key"{
+type = string
+}
+
+variable "sfsecret_key"{
+type = string
+}
+
+variable "sftoken"{
+type = string
+}
