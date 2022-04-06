@@ -23,15 +23,16 @@ resource "aws_security_group" "alb" {
 
 resource "aws_lb" "alb" {
   count              = var.create_alb ? 1 : 0
-  name               = "Aviatrix-ALB"
+  name               = "btnetdevalb"
   load_balancer_type = "application"
+  internal           = false
   security_groups    = [aws_security_group.alb[0].id]
   subnets            = [aws_subnet.subnet.id, aws_subnet.subnet_ha.id]
 }
 
 resource "aws_lb_target_group" "controller" {
-  count       = var.create_alb ? 1 : 0
-  name        = "Aviatrix-Target-Group"
+  count = var.create_alb ? 1 : 0
+  name  = "Aviatrix-Target-Group"
   #update this later to HTTPS 443 https.
   port        = "80"
   protocol    = "HTTP"
@@ -49,10 +50,10 @@ resource "aws_lb_listener" "listener" {
   count             = var.create_alb ? 1 : 0
   load_balancer_arn = aws_lb.alb[0].arn
   #update this later to HTTPS 443 https.
-  port              = "80"
-  protocol          = "HTTP"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.certificate_arn
+  port            = "80"
+  protocol        = "HTTP"
+  ssl_policy      = "ELBSecurityPolicy-2016-08"
+  certificate_arn = var.certificate_arn
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.controller[0].arn
