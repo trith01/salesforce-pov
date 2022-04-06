@@ -1,5 +1,12 @@
 provider "aws" {
   region = "us-west-2"
+  access_key = var.sfaccess_key
+  secret_key = var.sfsecret_key
+  token = var.sftoken
+  assume_role {
+    ##update during actual test
+    role_arn    = ""
+  }
 }
 
 resource "aws_vpc" "vpc" {
